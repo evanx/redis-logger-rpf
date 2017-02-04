@@ -6,7 +6,13 @@ module.exports = (config, redis) => [
     'debug', 'info', 'warn', 'error'
 ].reduce((logger, level) => {
     logger[level] = function() {
-        console_log(level, ...arguments);
+        if (level === 'debug') {
+            if (config.loggerLevel === 'debug') {
+                console_log(level, ...arguments);
+            }
+        } else {
+            console_log(level, ...arguments);
+        }
     };
     return logger;
 }, {});
@@ -21,8 +27,8 @@ const mapping = {
 function console_log(level, ...args) {
     const object = args.find(arg => typeof arg === 'object');
     if (object) {
-        console.log(mapping[level](JSON.stringify(args, null, 2)));
+        console.error(mapping[level](JSON.stringify(args, null, 2)));
     } else {
-        console.log(mapping[level](args.join(' ')));
+        console.error(mapping[level](args.join(' ')));
     }
 }
