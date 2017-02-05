@@ -8,5 +8,5 @@ Named in honour of https://en.wikipedia.org/wiki/Richard_Feynman
 
 https://github.com/evanx/sublog-http
 
---
+<hr>
 By https://twitter.com/@evanxsummers
