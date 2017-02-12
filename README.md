@@ -18,4 +18,4 @@ Placeholder with logging JSON content to console only.
 https://github.com/evanx/sublog-http
 
 <hr>
-By https://twitter.com/@evanxsummers
+https://twitter.com/@evanxsummers
