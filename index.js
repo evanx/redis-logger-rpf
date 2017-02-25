@@ -4,6 +4,7 @@ const lodash = require('lodash');
 
 const mapping = {
     debug: clc.green,
+    some: clc.cyan,
     info: clc.blue,
     warn: clc.yellow,
     error: clc.red
