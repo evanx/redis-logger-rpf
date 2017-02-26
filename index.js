@@ -10,8 +10,6 @@ const mapping = {
     error: clc.red
 };
 
-let timestamp = 0;
-
 const console_log = (level, args) => {
     const object = args.find(arg => typeof arg === 'object');
     if (object) {
@@ -21,6 +19,11 @@ const console_log = (level, args) => {
     }
 }
 
+const that = {
+    timestamp: 0,
+    omitted: 0
+};
+
 module.exports = (config, redis) => {
     const log = (level, args) => {
         if (level === 'debug') {
@@ -28,9 +31,10 @@ module.exports = (config, redis) => {
                 console_log(level, args);
             }
         } else if (level === 'some') {
-            if (Date.now() - timestamp > 1000) {
-                console_log(level, args);
-                timestamp = Date.now();
+            that.count++;
+            if (Date.now() - that.timestamp > 1000) {
+                console_log(level, that.count, args);
+                that.timestamp = Date.now();
             }
         } else {
             console_log(level, args);
