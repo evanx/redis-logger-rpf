@@ -10,7 +10,7 @@ const mapping = {
     error: clc.red
 };
 
-const console_log = (level, args) => {
+const console_log = (level, ...args) => {
     const object = args.find(arg => typeof arg === 'object');
     if (object) {
         console.error(mapping[level](JSON.stringify(args, null, 2)));
@@ -28,16 +28,16 @@ module.exports = (config, redis) => {
     const log = (level, args) => {
         if (level === 'debug') {
             if (config.loggerLevel === 'debug') {
-                console_log(level, args);
+                console_log(level, ...args);
             }
         } else if (level === 'some') {
             that.count++;
             if (Date.now() - that.timestamp > 1000) {
-                console_log(level, that.count, args);
+                console_log(level, that.count, ...args);
                 that.timestamp = Date.now();
             }
         } else {
-            console_log(level, args);
+            console_log(level, ...args);
         }
     };
     return ['debug', 'some', 'info', 'warn', 'error']
