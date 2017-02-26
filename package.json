@@ -1,16 +1,16 @@
 {
   "name": "redis-logger-rpf",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Experimental logger (debug, warn, info, error) into Redis.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./bin/test.sh"
   },
   "author": "@evanxsummers",
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/evanx/redis-logger-rpf.git"
+    "url": "https://github.com/evanx/redis-logger-rpf.git"
   },
   "homepage": "https://github.com/evanx/redis-logger-rpf",
   "dependencies": {

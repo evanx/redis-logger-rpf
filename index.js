@@ -23,14 +23,14 @@ const console_log = (level, args) => {
 
 module.exports = (config, redis) => {
     const log = (level, args) => {
-        if (config.loggerLevel === 'debug') {
-            if (level === 'debug') {
+        if (level === 'debug') {
+            if (config.loggerLevel === 'debug') {
                 console_log(level, args);
-            } else if (level === 'some') {
-                if (Date.now() - timestamp > 1000) {
-                    console_log(level, args);
-                    timestamp = Date.now();
-                }
+            }
+        } else if (level === 'some') {
+            if (Date.now() - timestamp > 1000) {
+                console_log(level, args);
+                timestamp = Date.now();
             }
         } else {
             console_log(level, args);
