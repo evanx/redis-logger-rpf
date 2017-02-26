@@ -34,15 +34,16 @@ module.exports = (config, redis) => {
                 console_log(level, ...args);
             }
         } else if (level === 'some') {
+            const timeLimit = (config.loggerLevel === 'debug') ? 2000 : 30000;
             if (typeof args[0] === 'string') {
                 const messageString = args[0];
                 const messageType = getSetDefault(that.messageTypes, messageString, {timestamp: 0, count: 0});
                 messageType.count++;
-                if (Date.now() - messageType.timestamp > 1000) {
+                if (Date.now() - messageType.timestamp > timeLimit) {
                     console_log(level, messageType.count, ...args);
                     messageType.timestamp = Date.now();
                 } 
-            } else if (Date.now() - that.timestamp > 1000) {
+            } else if (Date.now() - that.timestamp > timeLimit) {
                 console_log(level, that.count, ...args);
                 that.timestamp = Date.now();
             }
