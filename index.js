@@ -1,6 +1,7 @@
 
 const clc = require('cli-color');
 const lodash = require('lodash');
+const getSetDefault = require('get-set-default');
 
 const mapping = {
     debug: clc.green,
@@ -21,7 +22,8 @@ const console_log = (level, ...args) => {
 
 const that = {
     timestamp: 0,
-    count: 0
+    count: 0,
+    messageTypes: {}
 };
 
 module.exports = (config, redis) => {
@@ -32,7 +34,15 @@ module.exports = (config, redis) => {
                 console_log(level, ...args);
             }
         } else if (level === 'some') {
-            if (Date.now() - that.timestamp > 1000) {
+            if (typeof args[0] === 'string') {
+                const messageString = args[0];
+                const messageType = getSetDefault(that.messageTypes, messageString, {timestamp: 0, count: 0});
+                messageType.count++;
+                if (Date.now() - messageType.timestamp > 1000) {
+                    console_log(level, messageType.count, ...args);
+                    messageType.timestamp = Date.now();
+                } 
+            } else if (Date.now() - that.timestamp > 1000) {
                 console_log(level, that.count, ...args);
                 that.timestamp = Date.now();
             }

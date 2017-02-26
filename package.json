@@ -1,6 +1,6 @@
 {
   "name": "redis-logger-rpf",
-  "version": "0.2.6",
+  "version": "0.2.8",
   "description": "Experimental logger (debug, warn, info, error) into Redis.",
   "main": "index.js",
   "scripts": {
@@ -14,8 +14,8 @@
   },
   "homepage": "https://github.com/evanx/redis-logger-rpf",
   "dependencies": {
-    "app-bin": "^0.1.1",
     "cli-color": "^1.1.0",
+    "get-set-default": "^0.1.0",
     "lodash": "^4.17.4"
   }
 }
