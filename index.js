@@ -21,17 +21,17 @@ const console_log = (level, ...args) => {
 
 const that = {
     timestamp: 0,
-    omitted: 0
+    count: 0
 };
 
 module.exports = (config, redis) => {
     const log = (level, args) => {
+        that.count++;
         if (level === 'debug') {
             if (config.loggerLevel === 'debug') {
                 console_log(level, ...args);
             }
         } else if (level === 'some') {
-            that.count++;
             if (Date.now() - that.timestamp > 1000) {
                 console_log(level, that.count, ...args);
                 that.timestamp = Date.now();
