@@ -27,6 +27,7 @@ const that = {
 };
 
 module.exports = (config, redis) => {
+    const timeLimit = (config.loggerLevel === 'debug') ? 60000 : 600000;
     const log = (level, args) => {
         that.count++;
         if (level === 'debug') {
@@ -34,7 +35,6 @@ module.exports = (config, redis) => {
                 console_log(level, ...args);
             }
         } else if (level === 'some') {
-            const timeLimit = (config.loggerLevel === 'debug') ? 10000 : 300000;
             if (typeof args[0] === 'string') {
                 const messageString = args[0];
                 const messageType = getSetDefault(that.messageTypes, messageString, {timestamp: 0, count: 0});
