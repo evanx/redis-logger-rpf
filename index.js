@@ -4,7 +4,7 @@ const lodash = require('lodash');
 const getSetDefault = require('get-set-default');
 
 const mapping = {
-    debug: clc.xterm(250),
+    debug: clc.xterm(251),
     some: clc.cyan,
     info: clc.blue,
     warn: clc.yellow,
