@@ -21,35 +21,18 @@ const console_log = (level, ...args) => {
 }
 
 const that = {
-    timestamp: 0,
-    count: 0,
-    messageTypes: {}
 };
 
 module.exports = (config, redis) => {
     const timeLimit = (config.loggerLevel === 'debug') ? 60000 : 600000;
     const log = (level, args) => {
-        that.count++;
-        if (level === 'debug') {
-            if (config.loggerLevel === 'debug') {
-                console_log(level, ...args);
-            }
-        } else if (level === 'some') {
-            if (typeof args[0] === 'string') {
-                const messageString = args[0];
-                const messageType = getSetDefault(that.messageTypes, messageString, {timestamp: 0, count: 0});
-                messageType.count++;
-                if (Date.now() - messageType.timestamp > timeLimit) {
-                    console_log(level, messageType.count, ...args);
-                    messageType.timestamp = Date.now();
-                } 
-            } else if (Date.now() - that.timestamp > timeLimit) {
-                console_log(level, that.count, ...args);
-                that.timestamp = Date.now();
-            }
-        } else {
-            console_log(level, ...args);
-        }
+        const name = (typeof args[0] === 'string') ? args[0] : level;
+        const data = getSetDefault(that, name, {timestamp: 0, count: 0});
+        data.count++;
+        if (Date.now() - data.timestamp > timeLimit) {
+            console_log(level, data.count, ...args);
+            data.timestamp = Date.now();
+        } 
     };
     return ['debug', 'some', 'info', 'warn', 'error']
     .reduce((logger, level) => {
