@@ -49,18 +49,24 @@ module.exports = (config, redis) => {
         const arg = args[0];  
         const name = getName(arg);
         const data = getSetDefault(that, name, {timestamp: 0, count: 0});
+        const timestamp = Date.now();
         data.count++;
-        if (Date.now() - data.timestamp > timeLimit) {
-            if (typeof arg === 'object' && arg.name === 'DataError' && arg.data) {
+        if (timestamp - data.timestamp > timeLimit) {
+            if (typeof arg === 'object' && arg.name === 'DataError' && arg.message && arg.data) {
                 const jsonKey = `logger:error:${config.redisNamespace}:j`;
-                client.set(jsonKey, JSON.stringify(arg.data), (err, result) => {
+                const hashesKey = `logger:error:${config.redisNamespace}:h`;
+                const multi = client.multi();
+                multi.set(jsonKey, JSON.stringify(arg.data));
+                multi.hset(hashesKey, 'time', new Date(timestamp).toISOString());
+                multi.hset(hashesKey, 'message', arg.message);
+                multi.exec((err, results) => {
                     if (err) {
                         console.error(module.filename, 'set', jsonKey, err.message);
                     }
                 });
             }
             console_log(level, data.count, ...args);
-            data.timestamp = Date.now();
+            data.timestamp = timestamp;
         }
     };
     return ['debug', 'some', 'info', 'warn', 'error']
