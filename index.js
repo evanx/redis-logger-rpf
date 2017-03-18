@@ -11,7 +11,7 @@ const mapping = {
     error: clc.red
 };
 
-const console_log = (level, ...args) => {
+const console_log = (level, args) => {
     const object = args.find(arg => typeof arg === 'object');
     if (object) {
         console.error(mapping[level](JSON.stringify(args, null, 2)));
@@ -20,7 +20,7 @@ const console_log = (level, ...args) => {
     }
 }
 
-const getName = (level, arg) => {
+const getName = arg => {
     if (typeof arg === 'string') { 
         return arg;
     }
@@ -33,7 +33,7 @@ const getName = (level, arg) => {
             return keys[0];
         }
     }
-    return level;
+    return null;
 }
 
 const that = {};
@@ -47,7 +47,7 @@ module.exports = (config, redis) => {
     const timeLimit = (config.loggerLevel === 'debug') ? 60000 : 600000;
     const log = (level, args) => {
         const arg = args[0];  
-        const name = getName(level, arg);
+        const name = getName(arg) || level;
         const data = getSetDefault(that, name, {timestamp: 0, count: 0});
         const timestamp = Date.now();
         data.count++;
@@ -65,8 +65,9 @@ module.exports = (config, redis) => {
                     }
                 });
             }
-            console_log(level, data.count, ...args);
+            console_log(level, data.count, args);
             data.timestamp = timestamp;
+        } else if (process.env.NODE_ENV === 'development') {
         }
     };
     return ['debug', 'some', 'info', 'warn', 'error']
