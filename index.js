@@ -11,7 +11,7 @@ const mapping = {
     error: clc.red
 };
 
-const console_log = (level, args) => {
+const console_log = (level, data, args) => {
     const object = args.find(arg => typeof arg === 'object');
     if (object) {
         console.error(mapping[level](JSON.stringify(args, null, 2)));
@@ -65,8 +65,8 @@ module.exports = (config, redis) => {
                     }
                 });
             }
-            console_log(level, data.count, args);
             data.timestamp = timestamp;
+            console_log(level, data, args);
         } else if (process.env.NODE_ENV === 'development') {
         }
     };
