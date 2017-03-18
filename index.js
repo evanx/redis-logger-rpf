@@ -46,6 +46,9 @@ module.exports = (config, redis) => {
     });
     const timeLimit = (config.loggerLevel === 'debug') ? 60000 : 600000;
     const log = (level, args) => {
+        if (level === 'error') {
+            console.error(level, args);
+        }
         const arg = args[0];  
         const name = getName(arg) || level;
         const data = getSetDefault(that, name, {timestamp: 0, count: 0});
