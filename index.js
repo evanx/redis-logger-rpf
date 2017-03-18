@@ -13,11 +13,12 @@ const mapping = {
 
 const console_log = (level, data, args) => {
     const object = args.find(arg => typeof arg === 'object');
-    if (level === 'error') {
-        console.error({level, data, object}, args);
-    }
     if (object) {
-        console.error(mapping[level](JSON.stringify(args, null, 2)));
+        if (level === 'error' && object.message) {
+            console.error(mapping[level](object.message));
+        } else {
+            console.error(mapping[level](JSON.stringify(args, null, 2)));
+        }
     } else {
         console.error(mapping[level](args.join(' ')));
     }
