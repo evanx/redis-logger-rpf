@@ -13,6 +13,9 @@ const mapping = {
 
 const console_log = (level, data, args) => {
     const object = args.find(arg => typeof arg === 'object');
+    if (level === 'error') {
+        console.error({name, level, data, arg, object}, args);
+    }
     if (object) {
         console.error(mapping[level](JSON.stringify(args, null, 2)));
     } else {
@@ -68,9 +71,6 @@ module.exports = (config, redis) => {
             data.timestamp = timestamp;
             console_log(level, data, args);
         } else if (process.env.NODE_ENV === 'development') {
-        }
-        if (level === 'error') {
-            console.error(name, level, data, args);
         }
     };
     return ['debug', 'some', 'info', 'warn', 'error']

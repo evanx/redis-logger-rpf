@@ -1,6 +1,6 @@
 {
   "name": "redis-logger-rpf",
-  "version": "0.3.8",
+  "version": "0.3.9",
   "description": "Experimental logger (debug, warn, info, error) into Redis (planned).",
   "main": "index.js",
   "scripts": {
